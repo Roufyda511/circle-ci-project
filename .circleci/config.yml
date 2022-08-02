@@ -24,7 +24,9 @@ jobs:
           key: "npm-packages"
       - run:
           name: "test"
-          command: npm run test
+          command: |
+            npm i
+            npm run test
   audit:
     docker:
       - image: circleci/node:13.8.0
