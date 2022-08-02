@@ -2,12 +2,12 @@ version: 2.1
 job_defaults: &job_defaults
   docker:
   - image: circleci/node:14.15.4
-    # environment:
-    #   CHROME_BIN: /usr/bin/google-chrome
-#  working_directory: ~/cg-front-end
-#cache_key: &cache_key cg-front-end-{{ .Branch }}-{{ checksum "package-lock.json" }}
-# orbs:
-#   browser-tools: circleci/browser-tools@1.1.0
+    environment:
+      CHROME_BIN: /usr/bin/google-chrome
+  working_directory: ~/cg-front-end
+cache_key: &cache_key cg-front-end-{{ .Branch }}-{{ checksum "package-lock.json" }}
+orbs:
+  browser-tools: circleci/browser-tools@1.1.0
 jobs:
   chrome_version:
    <<: *job_defaults
@@ -27,39 +27,39 @@ jobs:
           command: |
             npm i
             npm run test:ci
-      # - save_cache:
-      #     paths:
-      #       - node_modules
+      - save_cache:
+          paths:
+            - node_modules
+          key: *cache_key
+  test:
+    <<: *job_defaults
+    steps:
+      - checkout
+      # - restore_cache:
       #     key: *cache_key
-  # test:
-  #   <<: *job_defaults
-  #   steps:
-  #     - checkout
-  #     # - restore_cache:
-  #     #     key: *cache_key
-  #     - run:
-  #         name: "test"
-  #         command: |
-  #          npm i
+      - run:
+          name: "test"
+          command: |
+           npm i
            
-  # audit:
-  #   docker:
-  #     - image: circleci/node:14.15.4
-  #   steps:
-  #     - checkout
-  #     # - restore_cache:
-  #     #     key: *cache_key
-  #     - run:
-  #         name: "audit"
-  #         command: npm run audit
+  audit:
+    docker:
+      - image: circleci/node:14.15.4
+    steps:
+      - checkout
+      # - restore_cache:
+      #     key: *cache_key
+      - run:
+          name: "audit"
+          command: npm run audit
 workflows:
   build-workflow:
     jobs:
-      #- chrome_version
+      - chrome_version
       - build
-      # - test:
-      #     requires:
-      #       - build
-      # - audit:
-      #     requires:
-      #       - test
+      - test:
+          requires:
+            - build
+      - audit:
+          requires:
+            - test
