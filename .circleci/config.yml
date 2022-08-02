@@ -12,11 +12,10 @@ jobs:
   chrome_version:
    <<: *job_defaults
    steps:
-  
+      - browser-tools/install-browser-tools
       - run:
           name: "chrome_version"
           command: |
-            browser-tools/install-browser-tools
             google-chrome --version
   build:
    <<: *job_defaults
