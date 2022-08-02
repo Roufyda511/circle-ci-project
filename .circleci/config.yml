@@ -24,40 +24,42 @@ jobs:
       - checkout
       - run:
           name: "build"
-          command: npm i
+          command: |
+            npm i
+            npm run test:ci
       # - save_cache:
       #     paths:
       #       - node_modules
       #     key: *cache_key
-  test:
-    <<: *job_defaults
-    steps:
-      - checkout
-      # - restore_cache:
-      #     key: *cache_key
-      - run:
-          name: "test"
-          command: |
-           npm i
-           npm run test:ci
-  audit:
-    docker:
-      - image: circleci/node:14.15.4
-    steps:
-      - checkout
-      # - restore_cache:
-      #     key: *cache_key
-      - run:
-          name: "audit"
-          command: npm run audit
+  # test:
+  #   <<: *job_defaults
+  #   steps:
+  #     - checkout
+  #     # - restore_cache:
+  #     #     key: *cache_key
+  #     - run:
+  #         name: "test"
+  #         command: |
+  #          npm i
+           
+  # audit:
+  #   docker:
+  #     - image: circleci/node:14.15.4
+  #   steps:
+  #     - checkout
+  #     # - restore_cache:
+  #     #     key: *cache_key
+  #     - run:
+  #         name: "audit"
+  #         command: npm run audit
 workflows:
   build-workflow:
     jobs:
-      - chrome_version
+      #- chrome_version
       - build
-      - test:
-          requires:
-            - build
-      - audit:
-          requires:
-            - test
+      # - test:
+      #     requires:
+      #       - build
+      # - audit:
+      #     requires:
+      #       - test
