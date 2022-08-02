@@ -1,8 +1,15 @@
 version: 2.1
+job_defaults: &job_defaults
+  docker:
+  - image: circleci/node:14.15.4
+    environment:
+      CHROME_BIN: /usr/bin/google-chrome
+  working_directory: ~/cg-front-end
+cache_key: &cache_key cg-front-end-deps-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}
+
 jobs:
   build:
-   docker:
-      - image: circleci/node:14.15.4
+   <<: *job_defaults
    steps:
       - checkout
       - run:
@@ -11,24 +18,13 @@ jobs:
       - save_cache:
           paths:
             - "/src/node_module"
-          key: "npm-packages"
-  npm version:
-   docker:
-      - image: circleci/node:14.15.4
-   steps:
-      - checkout
-      - run:
-          name: "npm version "
-          command: npm -v
+          key: *cache_key
   test:
-    docker:
-      - image: circleci/node:14.15.4
-    environment:
-          - CHROME_BIN=/usr/bin/google-chrome
+    <<: *job_defaults
     steps:
       - checkout
       - restore_cache:
-          key: "npm-packages"
+          key: *cache_key
       - run:
           name: "test"
           command: |
