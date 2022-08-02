@@ -5,7 +5,7 @@ job_defaults: &job_defaults
     environment:
       CHROME_BIN: /usr/bin/google-chrome
   working_directory: ~/cg-front-end
-cache_key: &cache_key cg-front-end-{{ .Branch }}-{{ checksum "package-lock.json" }}
+#cache_key: &cache_key cg-front-end-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
 jobs:
   build:
@@ -15,19 +15,21 @@ jobs:
       - run:
           name: "build"
           command: npm i
-      - save_cache:
-          paths:
-            - node_modules
-          key: *cache_key
+      # - save_cache:
+      #     paths:
+      #       - node_modules
+      #     key: *cache_key
   test:
     <<: *job_defaults
     steps:
       - checkout
-      - restore_cache:
-          key: *cache_key
+      # - restore_cache:
+      #     key: *cache_key
       - run:
           name: "test"
-          command: npm run test:ci
+          command: |
+           npm i
+           npm run test:ci
   audit:
     docker:
       - image: circleci/node:14.15.4
