@@ -26,7 +26,7 @@ jobs:
           name: "build"
           command: |
             npm i
-            npm run test:ci
+            
       - save_cache:
           paths:
             - node_modules
@@ -35,20 +35,21 @@ jobs:
     <<: *job_defaults
     steps:
       - checkout
-      # - restore_cache:
-      #     key: *cache_key
+      - restore_cache:
+          key: *cache_key
       - run:
           name: "test"
           command: |
            npm i
+           npm run test:ci
            
   audit:
     docker:
       - image: circleci/node:14.15.4
     steps:
       - checkout
-      # - restore_cache:
-      #     key: *cache_key
+      - restore_cache:
+          key: *cache_key
       - run:
           name: "audit"
           command: npm run audit
