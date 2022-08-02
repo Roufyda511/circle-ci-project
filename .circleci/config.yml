@@ -35,8 +35,8 @@ jobs:
       - image: circleci/node:14.15.4
     steps:
       - checkout
-      - restore_cache:
-          key: *cache_key
+      # - restore_cache:
+      #     key: *cache_key
       - run:
           name: "audit"
           command: npm run audit
