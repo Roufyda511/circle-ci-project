@@ -1,11 +1,8 @@
-
 version: 2.1
-browser-tools: circleci/browser-tools@1.4.0
-
 jobs:
   build:
    docker:
-      - image: cimg/node:13.12-browsers
+      - image: circleci/node:13.8.0
    steps:
       - checkout
       - run:
@@ -17,7 +14,9 @@ jobs:
           key: "npm-packages"
   test:
     docker:
-      - image: cimg/node:13.12-browsers
+      - image: circleci/node:13.8.0
+    environment:
+          - CHROME_BIN=/usr/bin/google-chrome
     steps:
       - checkout
       - restore_cache:
@@ -29,7 +28,7 @@ jobs:
             npm run test
   audit:
     docker:
-      - image: cimg/node:13.12-browsers
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
