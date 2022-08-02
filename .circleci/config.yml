@@ -3,7 +3,7 @@ job_defaults: &job_defaults
   docker:
   - image: circleci/node:14.15.4
     environment:
-      CHROME_BIN: /usr/bin/google-chrome
+      CHROME_BIN: /usr/bin/google-chrome karma start --single-run
   working_directory: ~/cg-front-end
 cache_key: &cache_key cg-front-end-{{ .Branch }}
 orbs:
