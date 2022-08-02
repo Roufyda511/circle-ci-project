@@ -12,7 +12,8 @@ jobs:
   chrome_version:
    <<: *job_defaults
    steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - run:
           name: "chrome_version"
           command: |
