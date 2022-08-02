@@ -24,8 +24,7 @@ jobs:
           key: "npm-packages"
       - run:
           name: "test"
-          command: |
-            npm i
+          command: 
             npm run test
   audit:
     docker:
