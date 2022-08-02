@@ -25,7 +25,7 @@ jobs:
           name: "test"
           command: |
             npm i
-            npm run test
+            npm run test:ci
   audit:
     docker:
       - image: circleci/node:13.8.0

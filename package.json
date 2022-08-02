@@ -6,6 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "coverage": "ng test --codeCoverage=true --browsers ChromeHeadlessNoSandbox",
+    "*** CI ****": "",
+    "test:ci": "npm run coverage -- --no-watch",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
