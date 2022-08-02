@@ -6,7 +6,8 @@ job_defaults: &job_defaults
       CHROME_BIN: /usr/bin/google-chrome
   working_directory: ~/cg-front-end
 #cache_key: &cache_key cg-front-end-{{ .Branch }}-{{ checksum "package-lock.json" }}
-
+orbs:
+  browser-tools: circleci/browser-tools@1.1.0
 jobs:
   chrome_version:
    <<: *job_defaults
@@ -14,7 +15,9 @@ jobs:
   
       - run:
           name: "chrome_version"
-          command: google-chrome --version
+          command: |
+          browser-tools/install-browser-tools
+          google-chrome --version
   build:
    <<: *job_defaults
    steps:
