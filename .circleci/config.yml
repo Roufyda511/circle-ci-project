@@ -43,24 +43,23 @@ jobs:
            npm i
            npm run test:ci
            
-  audit:
+
+  create_infrastructure:
     docker:
-      - image: circleci/node:14.15.4
-    steps:
-      - checkout
-      - restore_cache:
-          key: *cache_key
-      - run:
-          name: "audit"
-          command: npm run audit
+        - image: amazon/aws-cli
+      steps:
+        - checkout
+        - run:
+            name: Create Cloudformation Stack
+            command: |
+              aws cloudformation deploy \
+                --template-file template.yml \
+                --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+                --region us-east-1
 workflows:
   build-workflow:
     jobs:
       - chrome_version
       - build
-      - test:
-          requires:
-            - build
-      - audit:
-          requires:
-            - test
+      - create_infrastructure
+
